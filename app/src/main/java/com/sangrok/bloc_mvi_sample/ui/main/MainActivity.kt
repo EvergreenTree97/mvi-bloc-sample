@@ -51,16 +51,11 @@ fun MainScreen(
             }
 
             state.members.isEmpty() -> {
-                Box(
-                    modifier = Modifier.fillMaxSize(),
-                    contentAlignment = Alignment.Center
-                ) {
-                    Button(
-                        onClick = {
-                            onAction(MainAction.ClickButton)
-                        }) {
-                        Text("멤버 불러오기")
-                    }
+                Button(
+                    onClick = {
+                        onAction(MainAction.ClickButton)
+                    }) {
+                    Text("멤버 불러오기")
                 }
             }
 
