@@ -4,16 +4,21 @@ import com.sangrok.bloc_mvi_sample.bloc.ViewState
 
 data class MainState(
     val isLoading: Boolean = false,
-    val members: List<String> = listOf(),
+    val members: List<Member> = listOf(),
     val isError: Boolean = false,
-    val currentTab: Tab = Tab.Tab1,
+    val currentTab: Tab = Tab.ODD,
 ) : ViewState {
     companion object {
         val INITIAL_STATE = MainState()
     }
 }
 
+data class Member(
+    val name: String,
+    val liked: Boolean,
+)
+
 enum class Tab {
-    Tab1,
-    Tab2,
+    ODD,
+    EVEN,
 }

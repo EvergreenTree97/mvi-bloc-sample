@@ -1,14 +1,14 @@
 package com.sangrok.bloc_mvi_sample.ui.main
 
 import com.sangrok.bloc_mvi_sample.bloc.ActionMapper
-import com.sangrok.bloc_mvi_sample.repository.MemberRepository
+import com.sangrok.bloc_mvi_sample.repository.MockRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.onStart
 
 class MainActionMapper(
-    private val memberRepository: MemberRepository,
+    private val memberRepository: MockRepository,
 ) : ActionMapper<MainState, MainAction> {
     override suspend fun mapActionToState(action: MainAction, state: MainState): Flow<MainState> {
         return when (action) {
@@ -35,8 +35,8 @@ class MainActionMapper(
     private fun clickTab(state: MainState, action: MainAction.ClickTab): Flow<MainState> = flow {
         val members = memberRepository.getMembers()
         val filteredMembers = when (action.selectedTab) {
-            Tab.Tab1 -> members.filterIndexed { index, s -> index % 2 == 0 }
-            Tab.Tab2 -> members.filterIndexed { index, s -> index % 2 == 1 }
+            Tab.EVEN -> members.filterIndexed { index, _ -> index % 2 == 0 }
+            Tab.ODD -> members.filterIndexed { index, _ -> index % 2 == 1 }
         }
         emit(
             state.copy(

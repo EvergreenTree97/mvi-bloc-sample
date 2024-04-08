@@ -1,7 +1,7 @@
 package com.sangrok.bloc_mvi_sample.ui.main
 
 import com.sangrok.bloc_mvi_sample.bloc.Bloc
-import com.sangrok.bloc_mvi_sample.repository.MemberRepository
+import com.sangrok.bloc_mvi_sample.repository.MockRepository
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -15,8 +15,8 @@ class RepositoryModule {
 
     @Singleton
     @Provides
-    fun provideMemberRepository(): MemberRepository {
-        return MemberRepository()
+    fun provideMemberRepository(): MockRepository {
+        return MockRepository()
     }
 }
 
@@ -26,7 +26,7 @@ class BlocModule {
 
     @Provides
     fun provideMainBloc(
-        memberRepository: MemberRepository
+        memberRepository: MockRepository
     ): Bloc<MainState, MainAction> {
         return Bloc(
             initialState = MainState.INITIAL_STATE,
