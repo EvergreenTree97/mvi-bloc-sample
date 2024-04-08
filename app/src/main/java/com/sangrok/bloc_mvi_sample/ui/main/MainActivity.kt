@@ -6,6 +6,8 @@ import androidx.activity.compose.setContent
 import androidx.activity.viewModels
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -46,6 +48,10 @@ fun MainScreen(
         contentAlignment = Alignment.Center
     ) {
         when {
+            state.isError -> {
+                ErrorScreen()
+            }
+
             state.isLoading -> {
                 CircularProgressIndicator()
             }
@@ -55,22 +61,40 @@ fun MainScreen(
                     onClick = {
                         onAction(MainAction.ClickButton)
                     }) {
+
                     Text("멤버 불러오기")
                 }
             }
 
             else -> {
-                LazyColumn(
-                    modifier = Modifier.fillMaxSize(),
-                    horizontalAlignment = Alignment.CenterHorizontally,
-                    verticalArrangement = Arrangement.Center
-                ) {
-                    items(state.members) {
-                        Text(it, fontSize = 24.sp)
+                Column {
+                    Row {
+                        Tab.values().forEach {
+                            Button(
+                                onClick = {
+                                    onAction(MainAction.ClickTab(it))
+                                }) {
+                                Text(it.name)
+                            }
+                        }
+                    }
+                    LazyColumn(
+                        modifier = Modifier.fillMaxSize(),
+                        horizontalAlignment = Alignment.CenterHorizontally,
+                        verticalArrangement = Arrangement.Center
+                    ) {
+                        items(state.members) {
+                            Text(it, fontSize = 24.sp)
+                        }
                     }
                 }
             }
         }
     }
 
+}
+
+@Composable
+fun ErrorScreen() {
+    TODO("Not yet implemented")
 }

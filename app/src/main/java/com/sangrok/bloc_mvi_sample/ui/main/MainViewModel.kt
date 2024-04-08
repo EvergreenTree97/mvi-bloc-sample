@@ -8,6 +8,4 @@ import javax.inject.Inject
 @HiltViewModel
 class MainViewModel @Inject constructor(
     bloc: Bloc<MainState, MainAction>
-) : BlocViewModel<MainState, MainAction>(bloc) {
-
-}
+) : BlocViewModel<MainState, MainAction>(bloc)
