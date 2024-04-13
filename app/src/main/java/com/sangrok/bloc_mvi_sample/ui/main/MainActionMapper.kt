@@ -5,6 +5,7 @@ import com.sangrok.bloc_mvi_sample.repository.MockRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.onStart
 
 class MainActionMapper(
@@ -14,6 +15,8 @@ class MainActionMapper(
         return when (action) {
             MainAction.ClickButton -> clickButton(state, action)
             is MainAction.ClickTab -> clickTab(state, action)
+            is MainAction.ClickLikeButton -> flowOf()
+            is MainAction.SetMemberState -> setMemberState(state, action)
         }
     }
 
@@ -42,6 +45,21 @@ class MainActionMapper(
             state.copy(
                 currentTab = action.selectedTab,
                 members = filteredMembers
+            )
+        )
+    }
+
+    private fun setMemberState(
+        state: MainState,
+        action: MainAction.SetMemberState
+    ): Flow<MainState> = flow {
+        val members = state.members.map {
+            if (it.name == action.member.name) action.member
+            else it
+        }
+        emit(
+            state.copy(
+                members = members
             )
         )
     }

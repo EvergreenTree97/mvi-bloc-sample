@@ -16,13 +16,9 @@ class MockRepository {
         )
     }
 
-    suspend fun like(member: Member): Member {
-        delay(100L)
-        return member.copy(liked = member.liked.not())
-    }
-
-    suspend fun unLike(member: Member): Member {
-        delay(100L)
+    suspend fun toggleLike(member: Member): Member {
+        delay(4000L)
+        error("메롱")
         return member.copy(liked = member.liked.not())
     }
 }

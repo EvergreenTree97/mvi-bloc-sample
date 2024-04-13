@@ -93,6 +93,12 @@ fun MainScreen(
                             Row {
                                 Text(it.name, fontSize = 24.sp)
                                 //Toggle
+                                Toggle(
+                                    selected = it.liked,
+                                    onSelectedChange = {
+                                        onAction(MainAction.ClickLikeButton(it))
+                                    }
+                                )
                             }
                         }
                     }
@@ -106,10 +112,10 @@ fun MainScreen(
 @Composable
 fun Toggle(
     selected: Boolean,
-    onSelectedChange: (Boolean) -> Unit,
+    onSelectedChange: () -> Unit,
 ) {
     Button(
-        onClick = { onSelectedChange(selected.not()) }
+        onClick = { onSelectedChange() }
     ) {
         if (selected) {
             Text("좋아요", color = Color.Red)

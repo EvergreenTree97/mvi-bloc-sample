@@ -1,6 +1,7 @@
 package com.sangrok.bloc_mvi_sample.ui.main
 
 import com.sangrok.bloc_mvi_sample.bloc.Bloc
+import com.sangrok.bloc_mvi_sample.bloc.MainActionTransFormer
 import com.sangrok.bloc_mvi_sample.repository.MockRepository
 import dagger.Module
 import dagger.Provides
@@ -30,7 +31,8 @@ class BlocModule {
     ): Bloc<MainState, MainAction> {
         return Bloc(
             initialState = MainState.INITIAL_STATE,
-            actionMapper = MainActionMapper(memberRepository)
+            actionMapper = MainActionMapper(memberRepository),
+            actionTransformer = MainActionTransFormer(memberRepository)
         )
     }
 
