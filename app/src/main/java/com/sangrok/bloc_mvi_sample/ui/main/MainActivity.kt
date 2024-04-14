@@ -14,7 +14,6 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
-import androidx.compose.material3.IconToggleButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -23,6 +22,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.window.Dialog
 import com.sangrok.bloc_mvi_sample.ui.theme.BlocmvisampleTheme
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -51,9 +51,6 @@ fun MainScreen(
         contentAlignment = Alignment.Center
     ) {
         when {
-            state.isError -> {
-                ErrorScreen()
-            }
 
             state.isLoading -> {
                 CircularProgressIndicator()
@@ -89,15 +86,23 @@ fun MainScreen(
                         horizontalAlignment = Alignment.CenterHorizontally,
                         verticalArrangement = Arrangement.Center
                     ) {
-                        items(state.members) {
+                        items(state.members) { member ->
                             Row {
-                                Text(it.name, fontSize = 24.sp)
-                                //Toggle
+                                Text(member.name, fontSize = 24.sp)
+                                Toggle(selected = member.liked, onSelectedChange = {
+                                    onAction(MainAction.ClickToggle(member))
+                                })
                             }
                         }
                     }
                 }
             }
+        }
+    }
+
+    if (state.errorDialogVisible) {
+        Dialog(onDismissRequest = { onAction(MainAction.DialogDismiss)}) {
+
         }
     }
 
