@@ -5,8 +5,9 @@ import com.sangrok.bloc_mvi_sample.bloc.ViewState
 data class MainState(
     val isLoading: Boolean = false,
     val members: List<Member> = listOf(),
-    val isError: Boolean = false,
     val currentTab: Tab = Tab.ODD,
+    val errorDialogVisible: Boolean = false,
+    val isShareAvailable: Boolean = false,
 ) : ViewState {
     companion object {
         val INITIAL_STATE = MainState()

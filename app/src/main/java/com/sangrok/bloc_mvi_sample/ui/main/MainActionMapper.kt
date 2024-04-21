@@ -3,8 +3,9 @@ package com.sangrok.bloc_mvi_sample.ui.main
 import com.sangrok.bloc_mvi_sample.bloc.ActionMapper
 import com.sangrok.bloc_mvi_sample.repository.MockRepository
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.emptyFlow
 import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.last
 import kotlinx.coroutines.flow.onStart
 
 class MainActionMapper(
@@ -14,6 +15,9 @@ class MainActionMapper(
         return when (action) {
             MainAction.ClickButton -> clickButton(state, action)
             is MainAction.ClickTab -> clickTab(state, action)
+            is MainAction.ClickToggle -> emptyFlow()
+            is MainAction.SetMemberState -> setMemberState(state, action)
+            MainAction.DialogDismiss -> dialogDismiss(state, action)
         }
     }
 
@@ -28,8 +32,6 @@ class MainActionMapper(
             )
         }.onStart {
             emit(state.copy(isLoading = true))
-        }.catch {
-            emit(state.copy(isError = true))
         }
 
     private fun clickTab(state: MainState, action: MainAction.ClickTab): Flow<MainState> = flow {
@@ -41,8 +43,29 @@ class MainActionMapper(
         emit(
             state.copy(
                 currentTab = action.selectedTab,
-                members = filteredMembers
+                members = filteredMembers,
+                isLoading = false
             )
         )
+    }
+
+    private fun setMemberState(
+        state: MainState,
+        action: MainAction.SetMemberState
+    ): Flow<MainState> {
+        return flow {
+            val index = state.members.indexOfFirst { it.name == action.member.name }
+            val list = state.members.toMutableList().apply {
+                set(index, action.member)
+            }
+            emit(state.copy(members = list))
+        }
+    }
+
+
+    private fun dialogDismiss(state: MainState, action: MainAction): Flow<MainState> {
+        return flow {
+            emit(state.copy(errorDialogVisible = false))
+        }
     }
 }

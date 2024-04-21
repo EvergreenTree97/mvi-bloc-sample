@@ -2,6 +2,8 @@ package com.sangrok.bloc_mvi_sample.ui.main
 
 import com.sangrok.bloc_mvi_sample.bloc.Bloc
 import com.sangrok.bloc_mvi_sample.repository.MockRepository
+import com.sangrok.bloc_mvi_sample.repository.MockRepositoryImpl
+import dagger.Binds
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -11,13 +13,11 @@ import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
-class RepositoryModule {
+abstract class RepositoryModule {
 
     @Singleton
-    @Provides
-    fun provideMemberRepository(): MockRepository {
-        return MockRepository()
-    }
+    @Binds
+    abstract fun provideMemberRepository(mockRepositoryImpl: MockRepositoryImpl): MockRepository
 }
 
 @Module
@@ -30,7 +30,8 @@ class BlocModule {
     ): Bloc<MainState, MainAction> {
         return Bloc(
             initialState = MainState.INITIAL_STATE,
-            actionMapper = MainActionMapper(memberRepository)
+            actionMapper = MainActionMapper(memberRepository),
+            //actionTransformer = MainActionTransformer(memberRepository)
         )
     }
 
