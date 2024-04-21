@@ -12,3 +12,4 @@ sealed class MainAction : ViewAction {
 
     object DialogDismiss: MainAction()
 }
+

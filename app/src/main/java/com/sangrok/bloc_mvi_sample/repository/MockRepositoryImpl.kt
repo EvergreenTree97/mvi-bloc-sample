@@ -2,9 +2,16 @@ package com.sangrok.bloc_mvi_sample.repository
 
 import com.sangrok.bloc_mvi_sample.ui.main.Member
 import kotlinx.coroutines.delay
+import javax.inject.Inject
 
-class MockRepository {
-    suspend fun getMembers(): List<Member> {
+interface MockRepository{
+    suspend fun getMembers(): List<Member>
+}
+
+class MockRepositoryImpl @Inject constructor(
+
+): MockRepository {
+    override suspend fun getMembers(): List<Member> {
         delay(1000L)
         return listOf(
             Member("상록", false),

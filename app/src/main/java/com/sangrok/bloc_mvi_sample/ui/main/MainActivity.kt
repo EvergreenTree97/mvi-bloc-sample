@@ -101,7 +101,7 @@ fun MainScreen(
     }
 
     if (state.errorDialogVisible) {
-        Dialog(onDismissRequest = { onAction(MainAction.DialogDismiss)}) {
+        Dialog(onDismissRequest = { onAction(MainAction.DialogDismiss) }) {
 
         }
     }

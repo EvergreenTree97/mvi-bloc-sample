@@ -7,6 +7,7 @@ data class MainState(
     val members: List<Member> = listOf(),
     val currentTab: Tab = Tab.ODD,
     val errorDialogVisible: Boolean = false,
+    val isShareAvailable: Boolean = false,
 ) : ViewState {
     companion object {
         val INITIAL_STATE = MainState()

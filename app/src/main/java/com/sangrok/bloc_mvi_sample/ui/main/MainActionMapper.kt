@@ -3,9 +3,9 @@ package com.sangrok.bloc_mvi_sample.ui.main
 import com.sangrok.bloc_mvi_sample.bloc.ActionMapper
 import com.sangrok.bloc_mvi_sample.repository.MockRepository
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.emptyFlow
 import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.last
 import kotlinx.coroutines.flow.onStart
 
 class MainActionMapper(
@@ -32,10 +32,6 @@ class MainActionMapper(
             )
         }.onStart {
             emit(state.copy(isLoading = true))
-        }.catch {
-            if (state.errorDialogVisible.not()) {
-                emit(state.copy(errorDialogVisible = true))
-            }
         }
 
     private fun clickTab(state: MainState, action: MainAction.ClickTab): Flow<MainState> = flow {
@@ -47,7 +43,8 @@ class MainActionMapper(
         emit(
             state.copy(
                 currentTab = action.selectedTab,
-                members = filteredMembers
+                members = filteredMembers,
+                isLoading = false
             )
         )
     }

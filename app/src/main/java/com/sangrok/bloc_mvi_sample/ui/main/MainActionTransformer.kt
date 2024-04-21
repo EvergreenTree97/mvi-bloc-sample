@@ -1,14 +1,13 @@
 package com.sangrok.bloc_mvi_sample.ui.main
 
 import com.sangrok.bloc_mvi_sample.bloc.ActionTransformer
-import com.sangrok.bloc_mvi_sample.repository.MockRepository
+import com.sangrok.bloc_mvi_sample.repository.MockRepositoryImpl
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOf
 
 class MainActionTransformer(
-    private val memberRepository: MockRepository,
+    private val memberRepository: MockRepositoryImpl,
 ) : ActionTransformer<MainAction> {
     override suspend fun transformActions(action: MainAction): Flow<MainAction> {
         return when (action) {
