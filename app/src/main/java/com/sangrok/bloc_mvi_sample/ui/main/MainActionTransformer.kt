@@ -11,18 +11,18 @@ class MainActionTransformer(
 ) : ActionTransformer<MainAction> {
     override suspend fun transformActions(action: MainAction): Flow<MainAction> {
         return when (action) {
-            is MainAction.ClickToggle -> clickToggle(action)
+            is MainAction.ClickToggle -> TODO()
             else -> flowOf(action)
         }
     }
 
-    private fun clickToggle(action: MainAction.ClickToggle): Flow<MainAction> = flow {
-        val cache = action.member
-        emit(MainAction.SetMemberState(action.member.copy(liked = action.member.liked.not())))
-        runCatching {
-            memberRepository.like(action.member)
-        }.onFailure {
-            emit(MainAction.SetMemberState(cache))
-        }
-    }
+//    private fun clickToggle(action: MainAction.ClickToggle): Flow<MainAction> = flow {
+//        val cache = action.member
+//        emit(MainAction.SetMemberState(action.member.copy(liked = action.member.liked.not())))
+//        runCatching {
+//            memberRepository.like(action.member)
+//        }.onFailure {
+//            emit(MainAction.SetMemberState(cache))
+//        }
+//    }
 }
