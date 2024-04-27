@@ -8,6 +8,7 @@ import io.mockk.coEvery
 import io.mockk.mockk
 import io.mockk.spyk
 import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.last
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert.assertEquals
 import org.junit.Test
@@ -47,10 +48,10 @@ class MainActionTransformerTest {
         val member = Member(name = "상록", liked = true)
         val action = MainAction.ClickToggle(member = member)
 
-        val expected = MainAction.SetMemberState(member = member.copy(liked = member.liked))
+        val expected = MainAction.SetMemberState(member = member)
         coEvery { repository.like(member) }.throws(IllegalStateException())
 
-        val actual = mainActionTransformer.transformActions(action).first()
+        val actual = mainActionTransformer.transformActions(action).last()
 
         assertEquals(expected, actual)
     }
