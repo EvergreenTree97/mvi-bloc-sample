@@ -42,4 +42,16 @@ class MainActionTransformerTest {
         assertEquals(expected, actual)
     }
 
+    @Test
+    fun `repository 통신이 실패했을 때 롤백 해주는지`() = runTest {
+        val member = Member(name = "상록", liked = true)
+        val action = MainAction.ClickToggle(member = member)
+
+        val expected = MainAction.SetMemberState(member = member.copy(liked = member.liked))
+        coEvery { repository.like(member) }.throws(IllegalStateException())
+
+        val actual = mainActionTransformer.transformActions(action).first()
+
+        assertEquals(expected, actual)
+    }
 }
