@@ -16,7 +16,30 @@ class MainActionTransformerTest {
     val repository: MockRepositoryImpl = mockk()
     val mainActionTransformer: MainActionTransformer = spyk(MainActionTransformer(repository))
 
+    @Test
+    fun `clickToggle시에 false에서 true로 바뀐다`() = runTest {
+        val member = Member(name = "상록", liked = false)
+        val action = MainAction.ClickToggle(member = member)
 
+        val expected = MainAction.SetMemberState(member = member.copy(liked = member.liked.not()))
+        coEvery { repository.like(member) } returns member.copy(liked = member.liked.not())
 
+        val actual = mainActionTransformer.transformActions(action).first()
+
+        assertEquals(expected, actual)
+    }
+
+    @Test
+    fun `clickToggle시에 true에서 false로 바뀐다`() = runTest {
+        val member = Member(name = "상록", liked = true)
+        val action = MainAction.ClickToggle(member = member)
+
+        val expected = MainAction.SetMemberState(member = member.copy(liked = member.liked.not()))
+        coEvery { repository.like(member) } returns member.copy(liked = member.liked.not())
+
+        val actual = mainActionTransformer.transformActions(action).first()
+
+        assertEquals(expected, actual)
+    }
 
 }
