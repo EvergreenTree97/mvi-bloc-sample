@@ -16,7 +16,7 @@ class MainActionMapper(
             MainAction.ClickButton -> clickButton(state, action)
             is MainAction.ClickTab -> clickTab(state, action)
             is MainAction.ClickToggle -> emptyFlow()
-            is MainAction.SetMemberState -> setMemberState(state, action)
+            is MainAction.SetMemberState -> TODO()
             MainAction.DialogDismiss -> dialogDismiss(state, action)
         }
     }
@@ -48,20 +48,6 @@ class MainActionMapper(
             )
         )
     }
-
-    private fun setMemberState(
-        state: MainState,
-        action: MainAction.SetMemberState
-    ): Flow<MainState> {
-        return flow {
-            val index = state.members.indexOfFirst { it.name == action.member.name }
-            val list = state.members.toMutableList().apply {
-                set(index, action.member)
-            }
-            emit(state.copy(members = list))
-        }
-    }
-
 
     private fun dialogDismiss(state: MainState, action: MainAction): Flow<MainState> {
         return flow {
