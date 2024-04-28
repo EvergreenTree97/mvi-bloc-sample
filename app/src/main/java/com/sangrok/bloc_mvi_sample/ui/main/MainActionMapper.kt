@@ -62,7 +62,6 @@ class MainActionMapper(
         }
     }
 
-
     private fun dialogDismiss(state: MainState, action: MainAction): Flow<MainState> {
         return flow {
             emit(state.copy(errorDialogVisible = false))

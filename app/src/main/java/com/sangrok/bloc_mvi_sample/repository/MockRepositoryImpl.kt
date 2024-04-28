@@ -6,6 +6,7 @@ import javax.inject.Inject
 
 interface MockRepository{
     suspend fun getMembers(): List<Member>
+    suspend fun like(member: Member): Member
 }
 
 class MockRepositoryImpl @Inject constructor(
@@ -23,7 +24,7 @@ class MockRepositoryImpl @Inject constructor(
         )
     }
 
-    suspend fun like(member: Member): Member {
+    override suspend fun like(member: Member): Member {
         delay(3000L)
         return member.copy(liked = member.liked.not())
     }

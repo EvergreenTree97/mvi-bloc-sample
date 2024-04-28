@@ -14,8 +14,6 @@ import org.junit.Before
 import org.junit.Test
 import org.mockito.Mock
 import org.mockito.MockitoAnnotations
-import org.mockito.kotlin.doReturn
-import org.mockito.kotlin.mock
 import org.mockito.kotlin.whenever
 
 /**
@@ -90,4 +88,30 @@ class MainActionMapperTest {
         }
     }
 
+    @Test
+    fun `GIVEN 변경해야하는 멤버 WHEN 멤버 상태 변경 THEN 멤버 리스트에서 특정 멤버 상태를 변경`() = runTest {
+        // GIVEN
+        val members = (0..5).map {
+            Member(
+                name = "$it",
+                liked = false
+            )
+        }
+
+        val givenState = MainState.INITIAL_STATE.copy(
+            members = members
+        )
+
+        val changedMember = Member("0", true)
+        val action = MainAction.SetMemberState(changedMember)
+
+        // WHEN
+        val actual = mainActionMapper.mapActionToState(action, givenState).last()
+
+        // THEN
+        val expect = givenState.copy(
+            members = members.map { if (it.name == "0") changedMember else it }
+        )
+        Assert.assertEquals(expect, actual)
+    }
 }
