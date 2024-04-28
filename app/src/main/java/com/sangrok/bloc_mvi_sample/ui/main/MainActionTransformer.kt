@@ -11,8 +11,12 @@ class MainActionTransformer(
 ) : ActionTransformer<MainAction> {
     override suspend fun transformActions(action: MainAction): Flow<MainAction> {
         return when (action) {
-            is MainAction.ClickToggle -> TODO()
+            is MainAction.ClickToggle -> clickToggle(action)
             else -> flowOf(action)
         }
+    }
+
+    private fun clickToggle(action: MainAction.ClickToggle): Flow<MainAction> = flow {
+
     }
 }
