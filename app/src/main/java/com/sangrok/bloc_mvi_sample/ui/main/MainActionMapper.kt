@@ -16,7 +16,7 @@ class MainActionMapper(
             MainAction.ClickButton -> clickButton(state, action)
             is MainAction.ClickTab -> clickTab(state, action)
             is MainAction.ClickToggle -> emptyFlow()
-            is MainAction.SetMemberState -> TODO()
+            is MainAction.SetMemberState -> setMemberState(state, action)
             MainAction.DialogDismiss -> dialogDismiss(state, action)
         }
     }
@@ -47,6 +47,15 @@ class MainActionMapper(
                 isLoading = false
             )
         )
+    }
+
+    private fun setMemberState(
+        state: MainState,
+        action: MainAction.SetMemberState
+    ): Flow<MainState> {
+        return flow {
+
+        }
     }
 
     private fun dialogDismiss(state: MainState, action: MainAction): Flow<MainState> {
