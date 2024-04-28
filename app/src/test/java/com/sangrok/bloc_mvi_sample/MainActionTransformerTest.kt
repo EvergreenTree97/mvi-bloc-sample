@@ -26,7 +26,7 @@ class MainActionTransformerTest {
     }
 
     @Test
-    fun `GIVEN 멤버 WHEN 토클 클릭 THEN 멤버 좋아요 상태가 false에서 true로 변경`() = runTest {
+    fun `GIVEN 좋아요 상태 false 멤버 WHEN 토클 클릭 THEN 좋아요 상태가 true로 변경`() = runTest {
         // GIVEN
         val member = Member("정민지", false)
         val action = MainAction.ClickToggle(member)
@@ -40,7 +40,7 @@ class MainActionTransformerTest {
     }
 
     @Test
-    fun `GIVEN 멤버 WHEN 토클 클릭 THEN 멤버 좋아요 상태가 true에서 false로 변경`() = runTest {
+    fun `GIVEN 좋아요 상태 true 멤버 WHEN 토클 클릭 THEN 좋아요 상태가 false로 변경`() = runTest {
         // GIVEN
         val member = Member("정민지", true)
         val action = MainAction.ClickToggle(member)
