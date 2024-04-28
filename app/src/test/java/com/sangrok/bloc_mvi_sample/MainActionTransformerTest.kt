@@ -12,6 +12,7 @@ import org.junit.Before
 import org.junit.Test
 import org.mockito.Mock
 import org.mockito.MockitoAnnotations
+import org.mockito.kotlin.whenever
 
 class MainActionTransformerTest {
     @Mock
@@ -27,6 +28,20 @@ class MainActionTransformerTest {
     @Test
     fun `GIVEN 멤버 WHEN 토클 클릭 THEN 멤버 좋아요 상태가 false에서 true로 변경`() = runTest {
         // GIVEN
+        val member = Member("정민지", false)
+        val action = MainAction.ClickToggle(member)
+
+        // WHEN
+        val actual = mainActionTransformer.transformActions(action).last()
+
+        // THEN
+        val expect = MainAction.SetMemberState(member.copy(liked = true))
+        Assert.assertEquals(expect, actual)
+    }
+
+    @Test
+    fun `GIVEN 멤버 WHEN 토클 클릭 THEN 멤버 좋아요 상태가 true에서 false로 변경`() = runTest {
+        // GIVEN
         val member = Member("정민지", true)
         val action = MainAction.ClickToggle(member)
 
@@ -34,7 +49,23 @@ class MainActionTransformerTest {
         val actual = mainActionTransformer.transformActions(action).last()
 
         // THEN
-        val expect = MainAction.SetMemberState(member.copy(liked = member.liked.not()))
+        val expect = MainAction.SetMemberState(member.copy(liked = false))
+        Assert.assertEquals(expect, actual)
+    }
+
+    @Test
+    fun `GIVEN 멤버 WHEN 토클 클릭 후 서버 api 호출 실패 THEN 멤버 상태 롤백`() = runTest {
+        // GIVEN
+        val member = Member("정민지", true)
+        val action = MainAction.ClickToggle(member)
+
+        whenever(mockRepository.like(member)).thenThrow()
+
+        // WHEN
+        val actual = mainActionTransformer.transformActions(action).last()
+
+        // THEN
+        val expect = MainAction.SetMemberState(member)
         Assert.assertEquals(expect, actual)
     }
 }
