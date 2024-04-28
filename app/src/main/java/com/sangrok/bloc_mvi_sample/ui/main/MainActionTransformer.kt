@@ -19,5 +19,10 @@ class MainActionTransformer(
     private fun clickToggle(action: MainAction.ClickToggle): Flow<MainAction> = flow {
         val cache = action.member
         emit(MainAction.SetMemberState(cache.copy(liked = cache.liked.not())))
+        runCatching {
+            memberRepository.like(cache)
+        }.onFailure {
+            emit(MainAction.SetMemberState(cache))
+        }
     }
 }
