@@ -54,7 +54,11 @@ class MainActionMapper(
         action: MainAction.SetMemberState
     ): Flow<MainState> {
         return flow {
-
+            val index = state.members.indexOfFirst { it.name == action.member.name }
+            val list = state.members.toMutableList().apply {
+                set(index, action.member)
+            }
+            emit(state.copy(members = list))
         }
     }
 
